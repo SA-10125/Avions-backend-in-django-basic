@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+Hi, youre home. Go to <a href="admin/"> admin</a> to login if U want. Though theres not much even if u login currently, 
+ill build based on what yall need. you tell me what you need. as in the end product, 
+and we will see what it takes to get there and work accordingly.   
+Also can someone please make a gitignore file, ill fill it in later. (pycache is not needed.)
+
+<a href="">home </a> <!--this is what we call recursion. xD (sry for the bad jokes, im little sleepy)-->
+<a href="login/">login</a>
+<a href="logout/">logout</a>
+<a href="gallery/">gallery</a>
+<a href="events/">events</a>
+<a href="contact/">contact us</a>
+
+{% if gallery %}
+    Gallery:
+        {% for image in gallery %}
+            <img src="{% static image.image  %}" alt="{{image.name}}"> <!--idk if the quotes are suppsed to be there, some html dude pls try with and without and see which works and keep it. thanks.-->
+        {% endfor %}
+{% endif %}
+
+
+{% if team_members %}
+    Meet Our Team
+        {% for member in team_members %}
+            <img src="{% static member.image  %}" alt="{{member.name}}"> <!--idk if the quotes are suppsed to be there, some html dude pls try with and without and see which works and keep it. thanks.-->
+    
+            {{ member.name }}
+            {{ member.position }}
+
+        {% endfor %}
+{% endif %}
+
+(Also, pls go follow https://www.instagram.com/rotaract.pesuecc/ i know its been a dead club so far but were really working hard to change that and could use the support of an established, strong club like avions. :D 
+ Stay tuned btw, were cooking and trying our best. ) (Please delete this if you can see it. xD)
+</body>
+</html>

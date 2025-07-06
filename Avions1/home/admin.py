@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+#register your models here.
+
+from .models import team_member, gallery_name
+
+admin.site.register(team_member)
+admin.site.register(gallery_name)
