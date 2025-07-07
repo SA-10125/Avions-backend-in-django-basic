@@ -3,7 +3,7 @@ from django.contrib import messages #this is what we import to get flash message
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout #imported for the user login
 from django.contrib.auth.decorators import login_required,user_passes_test #this is used to restrict pages that need login or a certain login.
-from .models import team_member,gallery_name
+from .models import team_member,gallery_name, Blog
 #from csv import reader #used to read from deleted_data.csv (an idea)
 
 # Create your views here.
@@ -79,3 +79,101 @@ def render_events(request):
 def render_contact_us(request):
         context={}
         return(render(request,'contact_us.html',context))
+
+#TODO:  #get the notify buttonw working.
+        #load blogs like we did events in dajango_try. 
+        #each blog should be a get send to a pk page. (simple like in dajango)
+
+def render_about_us_page(request):
+        return render(request,"temp_about.html")
+
+
+def render_blogs(request):
+    context={"is_superuser": False, "user": False,"blogs":[]}
+
+    if request.user.is_authenticated:
+        context["user"]=request.user
+        if request.user.is_superuser:
+            context["is_superuser"]=True
+
+    for blog in Blog.objects.all():
+        context["blogs"].append(blog)
+
+    return render(request, 'blogs.html',context)
+
+def read_blog(request,pk):
+    context={"is_superuser": False, "user": False,"blog":None}
+
+    if request.user.is_authenticated:
+        context["user"]=request.user #add if the user is the author of the blog in html etc.
+        if request.user.is_superuser:
+            context["is_superuser"]=True
+
+    context["blog"]=Blog.objects.get(title=pk) #might change this to UID if needed.
+
+    return render(request, 'read_blog.html',context)
+
+@login_required(login_url='login') #users can write blogs
+def write_blog(request):
+    context={"is_superuser": False, "user": False}
+
+    if request.user.is_authenticated:
+        context["user"]=request.user
+        if request.user.is_superuser:
+            context["is_superuser"]=True
+
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        desc = request.POST.get('desc')
+        content = request.POST.get('content')
+        author = request.user
+
+        blog = Blog(title=title,desc=desc,content=content,author=author)
+        blog.save()
+
+        return redirect('blogs')
+
+    return render(request, 'write_blog.html',context)
+
+@login_required(login_url='login') #users can edit their blogs only
+def edit_blog(request,pk): 
+    context={"is_superuser": False, "user": False,"blog":None}
+
+    if request.user.is_authenticated:
+        context["user"]=request.user
+        if request.user.is_superuser:
+            context["is_superuser"]=True
+
+    context["blog"]=Blog.objects.get(title=pk) #might change this to UID if needed.
+    if context["blog"].author != request.user:
+        return redirect('blogs')
+    
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        desc = request.POST.get('desc')
+        content = request.POST.get('content')
+        author = request.user
+
+        context["blog"].title = title
+        context["blog"].desc = desc
+        context["blog"].content = content
+        context["blog"].save()
+
+        return redirect('blogs')
+
+    return render(request, 'edit_blog.html',context)
+
+@user_passes_test(lambda u: u.is_superuser) #admins can delete blogs
+def delete_blog(request,pk):
+    context={"is_superuser": False, "user": False,"blog":None}
+
+    if request.user.is_authenticated:
+        context["user"]=request.user
+        if request.user.is_superuser:
+            context["is_superuser"]=True
+
+    context["blog"]=Blog.objects.get(title=pk) #might change this to UID if needed.
+
+    context["blog"].delete()
+
+    return redirect('blogs')

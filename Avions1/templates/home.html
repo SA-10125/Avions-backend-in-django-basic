@@ -10,36 +10,53 @@
 
 Hi, youre home. Go to <a href="admin/"> admin</a> to login if U want. Though theres not much even if u login currently, 
 ill build based on what yall need. you tell me what you need. as in the end product, 
+also, my laptop is fast, idk how the speed is on most devices. 
 and we will see what it takes to get there and work accordingly.   
+<p></p>
 Also can someone please make a gitignore file, ill fill it in later. (pycache is not needed.)
 
+<p></p>
 <a href="">home </a> <!--this is what we call recursion. xD (sry for the bad jokes, im little sleepy)-->
+<p></p>
 <a href="login/">login</a>
+<p></p>
 <a href="logout/">logout</a>
+<p></p>
 <a href="gallery/">gallery</a>
+<p></p>
 <a href="events/">events</a>
+<p></p>
 <a href="contact/">contact us</a>
+<p></p>
+<a href="blogs/">Blogs</a>
+<p></p>
 
 {% if gallery %}
     Gallery:
         {% for image in gallery %}
+            <p></p>
             <img src="{% static image.image  %}" alt="{{image.name}}"> <!--idk if the quotes are suppsed to be there, some html dude pls try with and without and see which works and keep it. thanks.-->
+            <p></p>
         {% endfor %}
 {% endif %}
 
 
 {% if team_members %}
+<p></p>
     Meet Our Team
+    <p></p>
         {% for member in team_members %}
+        <p></p>
             <img src="{% static member.image  %}" alt="{{member.name}}"> <!--idk if the quotes are suppsed to be there, some html dude pls try with and without and see which works and keep it. thanks.-->
-    
-            {{ member.name }}
+    <p></p>
+            {{ member.name }}-
             {{ member.position }}
+            <p></p>
 
         {% endfor %}
 {% endif %}
-
+<p><p></p></p>
 (Also, pls go follow https://www.instagram.com/rotaract.pesuecc/ i know its been a dead club so far but were really working hard to change that and could use the support of an established, strong club like avions. :D 
- Stay tuned btw, were cooking and trying our best. ) (Please delete this if you can see it. xD)
+ Stay tuned btw, were cooking and trying our best. ) (Please delete this if you can see it. dont send off to prod xD)
 </body>
 </html>
